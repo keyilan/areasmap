@@ -1,3 +1,3 @@
-# Lexedata
+# Areas visualisation
 
 Coming soon.
