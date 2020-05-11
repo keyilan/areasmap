@@ -1,0 +1,29 @@
+extends layout.pug
+
+block content
+	//- div(style='background-color: #ddd; width: 100%; height: 10em;')
+	div.homepage
+		div.homepageleft
+			!= md.render(contents)
+		div.sidebarholder
+			div.sidebar
+				h2= i18n.__('RECENTLYADDED')
+				- let i = 0;
+				each item, key in metadata
+					- if (i < 2) // max number of entries to show
+						div
+							small= metadata[key].dateadded[0] + '/' + metadata[key].dateadded[1] + '/' + metadata[key].dateadded[2]
+							p
+								em= metadata[key].title
+								br
+								small=metadata[key].text 
+						- i++
+			div.sidebar
+				h2= i18n.__('NEWS')
+				- let e = 0;
+				each item in news
+					- if (e < 2) // max number of entries to show
+						div
+							small= item.date
+							!= md.render(item.content)
+						- e++

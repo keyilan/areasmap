@@ -1,0 +1,14 @@
+div#navbar
+	div.navleft
+		div.navrow
+			div#navhome(onclick='window.location.href="/"')
+				span= i18n.__('HOME')
+			each page in pages
+				- let url = '/'
+				- if (page != 'recordings') {url = '/p/' + page} else {url = url + page}
+					div(id='nav'+page onclick='window.location.href="' + url + '"')
+						span= i18n.__(page.toUpperCase())
+	div.navright
+		div.navrow
+			div#navcite(onclick='window.location.href="/p/cite"')
+				span= i18n.__('CITE')

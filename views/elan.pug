@@ -1,0 +1,121 @@
+extends layout.pug
+
+block content
+	- let scale = 7.5
+	each item, key in metadata
+		if key == fn
+			h1= metadata[key].title
+			script.
+				let bibtitle = '!{metadata[key].title}'
+				let bibauthor = '!{metadata[key].contributor[0].join(", ")}'
+				let bibkey = bibtitle.replace(/\s/g,'').toLowerCase()
+			div#metadata
+				div
+					h4= i18n.__('ABOUT')
+					each line in metadata[key].about
+						p= line
+					each line in metadata[key].metadata
+						p= line
+				div
+					h4= i18n.__('METADATA')
+					p= "Recorded on " + metadata[key].daterecorded[0] + '/' + metadata[key].daterecorded[1] + '/' + metadata[key].daterecorded[2]
+					
+					p= "Contributed by " + metadata[key].contributor[0][1] + " " + metadata[key].contributor[0][0] + ' on ' + metadata[key].dateadded[0] + '/' + metadata[key].dateadded[1] + '/' + metadata[key].dateadded[2]
+					p Language variety: 
+						a(href='/g/'+metadata[key].variety.glottocode)= metadata[key].variety.name
+	hr
+	div
+		audio#player
+			source(src='../files/' + media.mp3.replace('public/','') type='audio/mp3' preload='auto')
+	div#controls
+		div
+			button(onclick='document.getElementById("player").play()') play
+		div
+			button(onclick='document.getElementById("player").pause()') pause
+		div
+			button(onclick='stop()') stop
+		div#clock 0:00.00
+		div /
+		div#totaltime 0:00.00
+		div#progress
+			div#progchild &nbsp;
+	div#timelineholder
+		div.timelineholder
+			div.timelinetitles
+				div#timelinetitles
+					- let x = 0
+					div &nbsp;
+					each tier in tiers
+						- x++
+						div(style='color: '+tier.color+';')= tier._id
+			div#timeline.timeline
+				div#ticks
+				script.
+					let times = []
+					let wid = 0 // timeline width
+				- if (svgfile)
+					div#waveform!= svgfile
+				- else
+					div#waveform
+				each tier in tiers
+					each line, language in segments
+						- if (language == tier._id)
+							each segment in line
+								- if (segment.end)
+									div.line(onclick='select('+segment.start/1000+')' style='left: ' + parseInt(segment.start/scale) + '; width: 1000px; max-width: ' + parseInt((segment.end-segment.start)/scale) + ' !important;')
+										each word in segment.value
+											div.word= word
+								- else
+									div.line(style='left: ' + (segment.start/scale) + '; width: 1000px')
+										each word in segment.value
+											div.word= word+" "
+								script.
+									if (wid < parseInt(!{segment.end/scale} + 500)) {
+										wid = parseInt(!{segment.end/scale} + 500)
+									}
+									times.push((parseInt(!{segment.start/1000}*100)/100))
+					div.spacer &nbsp;
+				script.
+					document.getElementById("waveform").width = wid
+	
+	h2= i18n.__('COMMENTS')
+	blockquote
+		strong author&nbsp;
+		span there won't be comments on the EHLC site, but the app needs them since Phonemica will be ported and archived.
+	blockquote
+		strong author&nbsp;
+		span A second comment
+	h2= i18n.__('CITE')
+	p
+		:markdown-it(inline) In order to cite the website in full, [please see the citation page](/cite). For citing this recording, please use the following:
+	h4 Harvard
+	blockquote#harvard ...
+	h4 bibtex
+	:markdown-it
+		````
+		@incollection{ehlc2020[KEY],
+		  author = {[AUTHOR]},
+		  booktitle = {Eastern Himalayan Language Collection},
+		  editor = {Post, {Mark} and {Van Dam}, {Kellen Parker}},
+		  publisher = {Phonemica},
+		  title = {[TITLE]},
+		  URL = {[URL]},
+		  note = {[ACCESSED]},
+		  year = {2020}
+		}
+		````
+
+block scripts
+	- if (svgfile == false)
+		- svgfile = false
+	- else
+		- svgfile = true
+	script.
+		let scale = !{scale},
+			xres = 10/!{scale},
+			yres = 20,
+			wave = !{waveform},
+			tiersheight = !{tiers.length},
+			svgfile = !{svgfile}
+
+	script(src='../js/mower.js')

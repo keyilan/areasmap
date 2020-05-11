@@ -1,0 +1,27 @@
+extends layout.pug
+
+block content
+	h1 Recordings
+	hr
+	p This page lists all of the available recordings which have been submitted to the project and approved for display. Please select from the list below.
+	ol
+		each file in files
+			li
+				each item, key in metadata
+					if key == file
+						div
+							h2
+								a(href='/e/'+file)= metadata[key].title
+								small= ' spoken by '+ metadata[key].speaker
+							//- each name in metadata[key].contributor
+							//- 	a(href='')= name[1] + ' '+ name[0]
+							//- div= file
+							blockquote
+								span= 'language variety: '+ metadata[key].variety.name + " "
+									a(href='https://glottolog.org/resource/langoid/id/'+metadata[key].variety.glottocode)= "("+metadata[key].variety.glottocode+")"
+								br
+								span= 'recorded on '+ metadata[key].daterecorded[0] + '/' +metadata[key].daterecorded[1] + '/' + metadata[key].daterecorded[2] + ' by '
+									each name in metadata[key].contributor
+										a(href='/c/'+(name[1]+name[0]).toLowerCase().replace(/\s/g,''))= name[1] + ' '+ name[0]
+								br
+								span= 'uploaded on '+ metadata[key].dateadded[0] + '/' +metadata[key].dateadded[1] + '/' + metadata[key].dateadded[2]

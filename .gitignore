@@ -1,0 +1,15 @@
+.DS_Store
+.sass-cache
+metadata.json
+node_modules
+package-lock.json
+pages/users/*
+public/css/*.css
+public/css/style.css.map
+public/files/*
+views/footer-phonemica.md
+pages/en/contact.md
+pages/en/map.md
+pages/en/recordings.md
+pages/en/search.md
+log/access.log

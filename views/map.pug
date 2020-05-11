@@ -1,0 +1,33 @@
+extends layout.pug
+
+block content
+	h1 Map of recordings
+	hr
+	div#map
+
+block scripts
+	link(rel="stylesheet" href="/css/leaflet.css")
+	script(src='/js/leaflet.js')
+	script.
+		var map = L.map('map', {
+			zoomSnap: 0.5
+		}).setView([27.460,96.083], 9);
+		L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png', {
+			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+			subdomains: 'abcd',
+			maxZoom: 19
+		}).addTo(map);
+		let bounds = []
+	each entry in metadata
+		script.
+			bounds.push([!{entry.location[0]},!{entry.location[1]}])
+			L.circleMarker([!{entry.location[0]},!{entry.location[1]}], {
+					radius: 10,
+					fillColor: "rgb(252, 225, 129)",
+					color: "#000000",
+					weight: 1,
+					opacity: 0.5,
+					fillOpacity: 0.75
+			}).addTo(map).bindPopup('<em>!{entry.title}</em><br>!{entry.variety.name}')
+	script.
+		map.fitBounds(bounds, {padding: [75,75]})

@@ -1,0 +1,20 @@
+div#footer
+	div.left
+		:markdown-it(inline) &copy; 2020 UZH IVS
+		div
+			a(href='/p/privacy')= i18n.__('PRIVACY')
+			br
+			a(href='/p/privacy')= i18n.__('TERMS')
+	div.center
+		include:markdown-it(inline breaks=true) footer.md
+	div.right
+		br
+		:markdown-it(inline)
+			[GitHub](https://github.com/keyilan/lexedata)
+		br
+		span keyilan/lexedata
+
+- if (active != false)
+	script.
+		console.log('!{active}')
+		document.getElementById("nav"+"!{active}").setAttribute('class','active')

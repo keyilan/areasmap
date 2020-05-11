@@ -1,0 +1,12 @@
+html
+	include header.pug
+	body
+		div#container
+			block heading
+				include navbar.pug
+			div#content
+				block content
+		include footer.pug
+		block scripts
+
+script(src='../js/bibtex.js')

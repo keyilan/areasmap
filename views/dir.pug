@@ -1,0 +1,8 @@
+extends layout.pug
+
+block content
+	h1 Sorry
+	p The page you are looking for does not exist. Did you mean to go to one of these?
+	each page in pages
+		li
+			a(href='/p/'+page.replace('.md',''))= page.replace('.md','')
