@@ -1,7 +1,7 @@
-# Lexedata
+# Areas
 ------
 
-Coming soon.
+Visualisation for UZH IVS OoA Areas project
 
 ## Contact
 ------

@@ -490,7 +490,8 @@ p:last-of-type {
 }
 
 #map {
-	height: calc(100vh - 20em);
+	height: calc(100vh - 40em);
+	min-height: 40em;
 	width: 100%;
 	border: 1px solid $dimshade;
 }
